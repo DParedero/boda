@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop" />
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>¡Nos casamos! | Belén & Dani</title>
+  <meta name="description" content="Invitación de boda con itinerario, confirmación de asistencia, mapa y galería." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <link rel="icon" href="favicon2.ico">
+  <link rel="icon" type="image/png" sizes="512x512" href="boda_icon2_512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="boda_icon2_180.png">
+  <meta property="og:image" content="boda_icon2_1024.png">
+  
+  <style>
+    :root{
+      --bg:#faf7f5;
+      --card:#ffffff;
+      --ink:#263238;
+      --muted:#5f6a6a;
+      --brand:#b5838d; /* rosa amaderado */
+      --brand-2:#6d6875; /* ciruela suave */
+      --accent:#e5989b; /* acento */
+      --ring: 0 0 0 3px rgba(181,131,141,.25);
+      --radius:18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0; padding:0; scroll-behavior:smooth;}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--ink); background:var(--bg);} 
+    a{color:var(--brand-2); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Layout */
+    .container{width:min(1100px, 92%); margin-inline:auto}
+    header.nav{position:sticky; top:0; z-index:50; backdrop-filter:saturate(180%) blur(12px); background:rgba(250,247,245,.8); border-bottom:1px solid rgba(0,0,0,.05)}
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:.8rem 0}
+    .brand{display:flex; align-items:center; gap:.6rem; font-weight:700; letter-spacing:.4px}
+    .brand .mark{width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--brand),var(--accent)); box-shadow:var(--shadow)}
+    .menu{display:flex; gap:1rem; align-items:center}
+    .menu a{padding:.5rem .8rem; border-radius:999px}
+    .menu a:hover{background:rgba(0,0,0,.04); text-decoration:none}
+    .burger{display:none; border:0; background:transparent; font-size:1.65rem}
+
+    /* Hero */
+    .hero{position:relative; padding:6rem 0 4rem; text-align:center}
+    .hero:before{content:""; position:absolute; inset:0; background:radial-gradient(60rem 30rem at 50% -5%, rgba(181,131,141,.20), transparent 50%), radial-gradient(30rem 20rem at 10% 80%, rgba(229,152,155,.16), transparent 50%), radial-gradient(30rem 20rem at 90% 80%, rgba(109,104,117,.16), transparent 50%); z-index:-1}
+    .names{font-family:"Playfair Display", serif; font-size:clamp(2.2rem, 3.6vw + 1rem, 4.2rem); margin:.5rem 0; color:var(--brand-2)}
+    .date{font-weight:600; color:var(--muted)}
+    .chip{display:inline-block; background:var(--card); padding:.35rem .75rem; border-radius:999px; box-shadow:var(--shadow); font-size:.9rem}
+    .countdown{margin:1.2rem 0 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap}
+    .countdown .tile{background:var(--card); border-radius:var(--radius); padding:1rem .9rem; min-width:88px; box-shadow:var(--shadow)}
+    .countdown .num{font-size:1.8rem; font-weight:700; color:var(--brand-2)}
+    .countdown .label{font-size:.8rem; color:var(--muted)}
+
+    /* Cards */
+    .grid{display:grid; gap:1.2rem}
+    @media(min-width:880px){.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:799px){.menu{display:none}.burger{display:block}}
+
+    section{padding:3.2rem 0}
+    h2{font-family:"Playfair Display", serif; font-size:2rem; color:var(--brand-2); margin:0 0 1.2rem}
+    p{line-height:1.6}
+
+    .card{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:1.3rem}
+
+    /* Timeline */
+    .timeline{position:relative; margin-left:.5rem}
+    .timeline:before{content:""; position:absolute; left:10px; top:.4rem; bottom:.4rem; width:2px; background:rgba(0,0,0,.08)}
+    .timeline-item{position:relative; padding-left:2.6rem; margin:.9rem 0}
+    .timeline-item .dot{position:absolute; left:2px; top:.4rem; width:18px; height:18px; border-radius:50%; background:linear-gradient(135deg,var(--brand),var(--accent)); box-shadow:var(--shadow)}
+    .time{font-weight:700; color:var(--brand-2)}
+
+    /* Gallery */
+    .gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:.6rem}
+    .gallery img{width:100%; height:180px; object-fit:cover; border-radius:14px}
+
+    /* FAQ */
+    details{background:var(--card); border-radius:12px; padding:1rem 1.1rem; box-shadow:var(--shadow)}
+    summary{cursor:pointer; font-weight:600; color:var(--brand-2)}
+    summary::marker{color:var(--brand)}
+
+    footer{padding:3rem 0 4rem; text-align:center; color:var(--muted)}
+
+    /* ===== Menú móvil tipo sheet ===== */
+    .menu-sheet{position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.28); backdrop-filter: blur(2px); display: grid; place-items: start center}
+    .menu-sheet[hidden]{ display: none }
+    .menu-sheet__panel{width: min(640px, 96%); margin-top: .5rem; background: var(--card); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; transform: translateY(-16px); opacity: 0; transition: transform .18s ease-out, opacity .18s ease-out}
+    .menu-sheet--open .menu-sheet__panel{ transform: translateY(0); opacity: 1 }
+    .menu-sheet__nav{ display: grid; padding: .25rem }
+    .menu-sheet__nav a{ display:block; padding: .9rem 1rem; border-radius: 12px; font-weight:600; color: var(--brand-2) }
+    .menu-sheet__nav a:hover{ background: rgba(0,0,0,.04); text-decoration:none }
+  
+    /* ===== Portada con foto ===== */
+    .hero{position:relative; padding:8rem 0 5rem; text-align:center}
+    .hero .cover{position:absolute; inset:0; z-index:-2; overflow:hidden; border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius)}
+    .hero .cover img{width:100%; height:100%; object-fit:cover; transform:scale(1.02)}
+    .hero .veil{position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.25) 40%, rgba(0,0,0,.2)); z-index:-1}
+    .hero .names, .hero .date, .hero .chip{color:#fff}
+    .hero .chip{background:rgba(255,255,255,.14); backdrop-filter:blur(2px); box-shadow:none; border:1px solid rgba(255,255,255,.25)}
+    .countdown .tile{background:rgba(255,255,255,.85)}
+
+	.story-figure{margin:0 0 1rem; border-radius:16px; overflow:hidden; box-shadow:var(--shadow)}
+	.story-figure img{display:block; width:100%; height:auto}
+	.story-figcaption{font-size:.9rem; color:var(--muted); text-align:center; margin-top:.4rem}
+	
+	.story-slider{position:relative; border-radius:16px; overflow:hidden; box-shadow:var(--shadow)}
+	.story-slide{display:none}
+	.story-slide.active{display:block}
+	.story-slide img{display:block; width:100%; height:auto}
+	.story-controls{
+	position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between;
+	pointer-events:none; padding:.5rem;
+	}
+	.story-btn{
+	pointer-events:auto; border:0; background:rgba(0,0,0,.45); color:#fff; cursor:pointer;
+	width:40px; height:40px; border-radius:999px; display:grid; place-items:center;
+	}
+	.story-dots{display:flex; gap:.4rem; justify-content:center; margin:.5rem 0 0}
+	.story-dot{
+	width:8px; height:8px; border-radius:999px; background:var(--muted,#ccc); opacity:.6; border:0; cursor:pointer;
+	}
+	.story-dot[aria-current="true"]{opacity:1; background:var(--accent,#111)}
+	.story-figcaption{font-size:.9rem; color:var(--muted); text-align:center; margin-top:.4rem}
+	
+	/* Altura más generosa para la portada */
+	.hero{ min-height: 62vh; padding: 10rem 0 7rem }
+
+	/* En pantallas medianas/grandes la estiramos un poco más */
+	@media (min-width: 768px){
+	.hero{ min-height: 72vh; padding: 12rem 0 8rem }
+	}
+
+	/* Si el encuadre se corta, mueve el punto de interés de la foto */
+	.hero .cover img{ object-position: center 30% }
+
+	.brand-logo{
+	  width:32px; height:32px; border-radius:999px; 
+	  object-fit:cover; display:inline-block; vertical-align:middle;
+	  box-shadow:0 0 0 2px #fff inset; /* opcional aro blanco */
+	  margin-right:.5rem;
+	}
+
+  </style>
+</head>
+<body>
+  <!-- Barra de navegación -->
+  <header class="nav" role="navigation" aria-label="Principal">
+    <div class="container nav-inner">
+      <a class="brand" href="#inicio">
+	  <img class="brand-logo" src="boda_icon_512.png" 
+		   srcset="boda_icon2_180.png 180w, boda_icon2_512.png 512w, boda_icon2_1024.png 1024w"
+		   sizes="32px"
+		   alt="Belén & Dani">
+	  <span>Belén & Dani</span>
+	  </a>
+      <nav class="menu" aria-label="Secciones">
+        <a href="#historia">Historia</a>
+        <a href="#boda">La boda</a>
+        <a href="#itinerario">Itinerario</a>
+        <a href="#rsvp">Confirmar</a>
+        <a href="#regalos">Regalos</a>
+        <a href="#faq">FAQ</a>
+        <a href="#galeria">Galería</a>
+      </nav>
+      <button class="burger" aria-label="Abrir menú" id="burger">☰</button>
+    </div>
+    <!-- Menú móvil (sheet desplegable) -->
+    <div class="menu-sheet" id="menuSheet" hidden>
+      <div class="menu-sheet__panel" role="dialog" aria-modal="true" aria-label="Menú">
+        <nav class="menu-sheet__nav">
+          <a href="#historia">Historia</a>
+          <a href="#boda">La boda</a>
+          <a href="#itinerario">Itinerario</a>
+          <a href="#rsvp">Confirmar</a>
+          <a href="#regalos">Regalos</a>
+          <a href="#faq">FAQ</a>
+          <a href="#galeria">Galería</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero container" id="top" aria-label="Portada">
+    <figure class="cover" aria-hidden="true"><img src="img/portada.jpg" alt=""></figure>
+    <div class="veil" aria-hidden="true"></div>
+    <span class="chip">¡Nos casamos!</span>
+    <h1 class="names">Belén & Dani</h1>
+    <p class="date">Sábado, 5 de septiembre de 2026 · Palacio de Esquileo, Sotos de Sepúlveda</p>
+    <div class="countdown" aria-live="polite" id="countdown"></div>
+  </section>
+
+  <main>
+    <!-- Nuestra historia -->
+    <section id="historia">
+      <div class="container grid cols-3">
+        <article class="card" style="grid-column:span 2">
+          <h2>Nuestra historia</h2>
+		  <!-- FOTO DE NUESTRA HISTORIA -->
+			<figure class="story-slider" id="historia-slider" aria-label="Galería de nuestra historia">
+			  <div class="story-slide active">
+				<img src="img/foto_peques_1.jpg" alt="Belén y Dani en el viaje 1" loading="lazy" width="1600" height="1067">
+			  </div>
+			  <div class="story-slide">
+				<img src="img/foto_mayores_1.jpg" alt="Belén y Dani en el viaje 2" loading="lazy" width="1600" height="1067">
+			  </div>
+
+			  <div class="story-controls" aria-hidden="true">
+				<button class="story-btn" type="button" data-prev title="Anterior" aria-label="Anterior">‹</button>
+				<button class="story-btn" type="button" data-next title="Siguiente" aria-label="Siguiente">›</button>
+			  </div>
+			</figure>
+			<div class="story-dots" id="historia-dots" role="tablist" aria-label="Indicadores del carrusel"></div>
+			<div class="story-figcaption">Dos momentos que nos encantan.</div>
+
+			  <!-- /FOTO -->
+          <p>De sobra sabéis nuestra historia.</p>
+          <p>Blablablaaa</p>
+        </article>
+        <aside class="card">
+          <h2>Detalles rápidos</h2>
+          <p><strong>Fecha:</strong> 05/09/2026</p>
+          <p><strong>Dress code:</strong> Cóctel elegante</p>
+          <p><strong>Hashtag:</strong> #BodaDeBelenYDani</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- La boda -->
+    <section id="boda">
+      <div class="container grid cols-2">
+        <div class="card"> 
+          <h2>Ceremonia</h2>
+          <p><span class="time">12:30</span> · Iglesia de Nuestra Señora del Manto</p>
+          <p>Dirección: Plaza Mayor, Riaza.</p>
+		   <p><a href="https://maps.app.goo.gl/Qg59EomaGHEhg2Lp8" target="_blank" rel="noopener">Abrir en el mapa</a></p>
+          <div class="card" style="padding:0; overflow:hidden">
+            <iframe title="Mapa del lugar" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d712.4913489230595!2d-3.47745522628779!3d41.280144801210966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd440bb830fc1dfd%3A0x31bb4d506d73253c!2sIglesia%20de%20Nuestra%20Se%C3%B1ora%20del%20Manto!5e1!3m2!1ses!2ses!4v1760263176927!5m2!1ses!2ses" width="100%" height="220" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Banquete</h2>
+          <p><span class="time">14:00</span> · Palacio de Esquileo</p>
+          <p>Habrá opciones para alergias, veganos, cordero y pescado. Indícalo en el formulario.</p>
+		   <p><a href="https://maps.app.goo.gl/VwhNcFtBWBN3WR7S8" target="_blank" rel="noopener">Abrir en el mapa</a></p>
+          <div class="card" style="padding:0; overflow:hidden">
+            <iframe title="Mapa del lugar" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1795.6564937245803!2d-3.5687873514083357!3d41.26957192051022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd440889a8141255%3A0x9c358e5bb4105bac!2sPalacio%20de%20Esquileo!5e1!3m2!1ses!2ses!4v1760284828879!5m2!1ses!2ses" width="100%" height="220" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Itinerario -->
+    <section id="itinerario">
+      <div class="container">
+        <h2>Itinerario</h2>
+        <div class="card">
+          <div class="timeline">
+            <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">12:30</div><div>Ceremonia en la iglesia de Riaza</div></div>
+            <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">13:30</div><div>Transporte hasta Soto de Sepúlveda</div></div>
+            <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">14:00</div><div>Cóctel y fotos</div></div>
+            <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">16:00</div><div>Banquete</div></div>
+            <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">18:30</div><div>Baile y barra libre</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Confirmación de asistencia -->
+    <section id="rsvp">
+      <div class="container grid cols-3">
+        <div class="card" style="grid-column:span 2">
+          <h2>Confirmar asistencia</h2>
+          <p>Por favor, confirma antes del <strong>20/05/2026</strong>.</p>
+          <!-- Formulario incrustado de Google Forms -->
+<div class="card" style="padding:0; overflow:hidden">
+  <iframe
+    title="Formulario de confirmación"
+    src="https://docs.google.com/forms/d/e/1FAIpQLSdcoClHu-bN09XFHAElu0bWGjzaWSSKTQNcVr5G_9FUYS5tjA/viewform?embedded=true"
+    width="100%"
+    height="1700"
+    frameborder="0"
+    marginheight="0"
+    marginwidth="0"
+    style="border:0; display:block"
+    loading="lazy"
+  >Cargando…</iframe>
+</div>
+<p class="muted" style="color:var(--muted); margin-top:.6rem">
+  Si no ves el formulario, ábrelo aquí:
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdcoClHu-bN09XFHAElu0bWGjzaWSSKTQNcVr5G_9FUYS5tjA/viewform" target="_blank" rel="noopener">Abrir formulario en una pestaña nueva</a>.
+</p>
+</div>
+        <aside class="card">
+          <h2>Transporte</h2>
+          <p>Habrá autobuses desde y hasta Riaza. Ida a las 14:30 y vuelta a las 12:00.</p>
+          <h2>Alojamiento</h2>
+          <p>Recomendamos alojaros en Riaza.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Regalos -->
+    <section id="regalos">
+      <div class="container grid cols-1">
+        <div class="card">
+          <h2>Lista de regalos</h2>
+          <p>Lo importante es que vengas. Pero si quieres ayudarnos en nuestra ruta por Nueva Zelanda:</p>
+          <ul><li>Transferencia: <strong>ES33 0128 7820 8801 0470 6834</strong></li></ul>
+        </div>
+        <div class="card" style="grid-column:span 2">
+          <h2>Preguntas frecuentes</h2>
+          <div class="grid" style="grid-template-columns:1fr 1fr; gap:.8rem">
+            <details><summary>¿Puedo llevar niños?</summary><p>[Sí/No]. Indícanoslo en el formulario.</p></details>
+            <details><summary>¿Hay parking?</summary><p>[Sí/No]. Recomendamos compartir coche o usar el bus.</p></details>
+            <details><summary>¿Tenéis fotógrafo?</summary><p>Claro. Comparte tus fotos con el hashtag [#BodaDeBelenYDani].</p></details>
+            <details><summary>¿Cuál es el dress code?</summary><p>Cóctel elegante.</p></details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Galería -->
+    <section id="galeria">
+      <div class="container">
+        <h2>Galería</h2>
+        <div class="gallery">
+          <!-- Reemplaza file:// por imágenes alojadas o rutas relativas válidas -->
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Iglesia_de_Nuestra_Se%C3%B1ora_del_Manto_-_01.jpg" alt="Iglesia en Riaza">
+          <img src="https://ficheros.venuesplace.com/h4Qs89FG/x4lxdR5C_t4.webp" alt="Palacio de Esquileo">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Hecho con cariño por Dani y Belén. Nos vemos el 05/09/2026.</footer>
+
+  <script>
+    // ===== Menú móvil (sheet) =====
+    const sheet = document.getElementById('menuSheet');
+    const burger = document.getElementById('burger');
+    function openSheet(){ sheet.removeAttribute('hidden'); requestAnimationFrame(()=> sheet.classList.add('menu-sheet--open')); document.documentElement.style.overflow = 'hidden' }
+    function closeSheet(){ sheet.classList.remove('menu-sheet--open'); setTimeout(()=>{ sheet.setAttribute('hidden',''); document.documentElement.style.overflow = '' }, 180) }
+    burger.addEventListener('click', openSheet);
+    sheet.addEventListener('click', (e)=>{ if(e.target === sheet) closeSheet() });
+    sheet.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeSheet));
+
+    // ===== Countdown =====
+    const weddingDate = new Date('2026-09-05T12:30:00');
+    const el = document.getElementById('countdown');
+    function pad(n){return n.toString().padStart(2,'0')}
+    function tick(){
+      const now = new Date();
+      let diff = Math.max(0, weddingDate - now);
+      const days = Math.floor(diff / (1000*60*60*24)); diff -= days*24*60*60*1000;
+      const hours = Math.floor(diff / (1000*60*60)); diff -= hours*60*60*1000;
+      const mins = Math.floor(diff / (1000*60)); diff -= mins*60*1000;
+      const secs = Math.floor(diff / 1000);
+      el.innerHTML = `
+        <div class="tile"><div class="num">${pad(days)}</div><div class="label">días</div></div>
+        <div class="tile"><div class="num">${pad(hours)}</div><div class="label">horas</div></div>
+        <div class="tile"><div class="num">${pad(mins)}</div><div class="label">min</div></div>
+        <div class="tile"><div class="num">${pad(secs)}</div><div class="label">seg</div></div>`
+    }
+    tick(); setInterval(tick, 1000);
+
+    // ===== Auto-tests mínimos =====
+    (function(){
+      try{
+        console.assert(typeof openSheet==='function'&&typeof closeSheet==='function','Funciones de menú existen');
+        console.assert(document.querySelectorAll('.menu-sheet__nav a').length>0,'Hay enlaces en el menú');
+        console.assert(document.getElementById('countdown'),'Existe #countdown');
+      }catch(e){console.warn('Self-tests fallidos:', e)}
+    })();
+  </script>
+  
+  <script>
+	(function(){
+	  const slider = document.getElementById('historia-slider');
+	  if(!slider) return;
+	  const slides = Array.from(slider.querySelectorAll('.story-slide'));
+	  const dotsWrap = document.getElementById('historia-dots');
+	  let i = 0;
+
+	  // crear dots
+	  slides.forEach((_, idx) => {
+		const b = document.createElement('button');
+		b.className = 'story-dot';
+		b.type = 'button';
+		b.setAttribute('role','tab');
+		b.setAttribute('aria-label','Ir a foto ' + (idx+1));
+		b.addEventListener('click', () => go(idx));
+		dotsWrap.appendChild(b);
+	  });
+
+	  const prev = slider.querySelector('[data-prev]');
+	  const next = slider.querySelector('[data-next]');
+	  prev.addEventListener('click', () => go(i - 1));
+	  next.addEventListener('click', () => go(i + 1));
+
+	  // swipe táctil básico
+	  let startX = null;
+	  slider.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive:true});
+	  slider.addEventListener('touchend', e => {
+		if(startX == null) return;
+		const dx = e.changedTouches[0].clientX - startX;
+		if(Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
+		startX = null;
+	  });
+
+	  function go(n){
+		slides[i].classList.remove('active');
+		i = (n + slides.length) % slides.length;
+		slides[i].classList.add('active');
+		updateDots();
+	  }
+	  function updateDots(){
+		const dots = dotsWrap.querySelectorAll('.story-dot');
+		dots.forEach((d, idx) => d.setAttribute('aria-current', idx === i ? 'true' : 'false'));
+	  }
+	  // estado inicial
+	  slides[0].classList.add('active');
+	  updateDots();
+	})();
+	</script>
+
+</body>
+</html>
