@@ -144,6 +144,29 @@
 	  margin-right:.5rem;
 	}
 
+	  /* Layout de regalos: móvil primero */
+#regalos .regalos-layout {
+  grid-template-columns: 1fr;      /* En móvil: una columna (texto arriba, imagen abajo) */
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* En pantallas a partir de 768px: dos columnas */
+@media (min-width: 768px) {
+  #regalos .regalos-layout {
+    grid-template-columns: 2fr 1.2fr;
+  }
+}
+
+/* Imagen de Hobbiton */
+#regalos .hobbiton-img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+
   </style>
 </head>
 <body>
@@ -318,19 +341,18 @@ Por eso hoy estamos aquí, celebrando que, después de diez años de persecucion
       </div>
     </section>
 
-   <!-- Regalos -->
 <!-- Regalos -->
 <section id="regalos">
   <div class="container grid cols-1">
     <div class="card" style="grid-column: span 2">
-      <div class="grid" style="grid-template-columns: 2fr 1.2fr; gap: 1.5rem; align-items: center;">
+      <div class="grid regalos-layout">
         <div>
           <h2>Lista de regalos</h2>
           <p>Lo importante es que vengas.</p>
           <p>Pero si quieres ayudarnos con nuestra ruta por Nueva Zelanda y que podamos conocer a la familia Bolsón, escríbenos y te daremos nuestros datos bancarios.</p>
         </div>
         <div>
-          <img src="img/hobbiton.jpg" alt="Hobbiton en Nueva Zelanda" style="width: 100%; height: auto; border-radius: 12px; object-fit: cover;">
+          <img src="img/hobbiton.jpeg" alt="Hobbiton en Nueva Zelanda" class="hobbiton-img">
         </div>
       </div>
     </div>
