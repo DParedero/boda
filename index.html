@@ -349,7 +349,26 @@ Por eso hoy estamos aquí, celebrando que, después de diez años de persecucion
         <div>
           <h2>Lista de regalos</h2>
           <p>Lo importante es que vengas.</p>
-          <p>Pero si quieres ayudarnos con nuestra ruta por Nueva Zelanda y que podamos conocer a la familia Bolsón, escríbenos y te daremos nuestros datos bancarios.</p>
+          <p>Pero si quieres ayudarnos con nuestra ruta por Nueva Zelanda y que podamos conocer a la familia Bolsón, usa la contraseña que te hemos enviado para ver nuestros datos bancarios.</p>
+          <div id="iban-box" style="margin-top:1rem">
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+              <input id="iban-pwd" type="password" placeholder="Contraseña" autocomplete="off"
+                style="padding:.5rem .8rem;border:1.5px solid var(--brand);border-radius:999px;font-size:.95rem;outline:none;width:180px">
+              <button onclick="descifrarIBAN()"
+                style="padding:.5rem 1.2rem;background:var(--brand);color:#fff;border:0;border-radius:999px;font-size:.95rem;cursor:pointer">
+                Ver IBAN
+              </button>
+            </div>
+            <p id="iban-error" style="color:#c0392b;font-size:.85rem;margin:.4rem 0 0;display:none">Contraseña incorrecta.</p>
+            <div id="iban-result" style="display:none;margin-top:.8rem;background:var(--bg);border:1.5px solid var(--brand);border-radius:12px;padding:.7rem 1rem">
+              <p style="margin:0;font-size:.8rem;color:var(--muted)">IBAN</p>
+              <p id="iban-value" style="margin:.2rem 0 0;font-size:1.05rem;font-weight:600;letter-spacing:.5px;font-family:monospace"></p>
+              <button onclick="copiarIBAN()" id="iban-copy-btn"
+                style="margin-top:.5rem;padding:.35rem .9rem;background:transparent;border:1.5px solid var(--brand);color:var(--brand);border-radius:999px;font-size:.8rem;cursor:pointer">
+                Copiar
+              </button>
+            </div>
+          </div>
         </div>
         <div>
           <img src="img/hobbiton.jpg" alt="Hobbiton en Nueva Zelanda" class="hobbiton-img">
@@ -476,6 +495,49 @@ Por eso hoy estamos aquí, celebrando que, después de diez años de persecucion
 	  updateDots();
 	})();
 	</script>
+
+  <script>
+  const _IBAN_ENC = {
+    salt: "AThwOuL9KI/0SyI5w5pg2Q==",
+    iv:   "+VBvbYL3WxAV8Cj6",
+    data: "D2bRZCdFuFa1bMI27WQzxJCw/cqELzHWum5sh94=",
+    tag:  "JSCPwVMiJNJxSz5/WgLnqA=="
+  };
+
+  function b64(s){ return Uint8Array.from(atob(s), c => c.charCodeAt(0)); }
+
+  async function descifrarIBAN() {
+    const pwd = document.getElementById('iban-pwd').value;
+    const err = document.getElementById('iban-error');
+    const res = document.getElementById('iban-result');
+    err.style.display = 'none';
+    res.style.display = 'none';
+    try {
+      const keyMat = await crypto.subtle.importKey('raw', new TextEncoder().encode(pwd), 'PBKDF2', false, ['deriveKey']);
+      const key = await crypto.subtle.deriveKey(
+        { name:'PBKDF2', salt: b64(_IBAN_ENC.salt), iterations: 100000, hash:'SHA-256' },
+        keyMat, { name:'AES-GCM', length:256 }, false, ['decrypt']
+      );
+      const ciphertext = new Uint8Array([...b64(_IBAN_ENC.data), ...b64(_IBAN_ENC.tag)]);
+      const plain = await crypto.subtle.decrypt({ name:'AES-GCM', iv: b64(_IBAN_ENC.iv) }, key, ciphertext);
+      document.getElementById('iban-value').textContent = new TextDecoder().decode(plain);
+      res.style.display = 'block';
+    } catch(_) {
+      err.style.display = 'block';
+    }
+  }
+
+  function copiarIBAN() {
+    const val = document.getElementById('iban-value').textContent;
+    navigator.clipboard.writeText(val).then(() => {
+      const btn = document.getElementById('iban-copy-btn');
+      btn.textContent = '¡Copiado!';
+      setTimeout(() => btn.textContent = 'Copiar', 2000);
+    });
+  }
+
+  document.getElementById('iban-pwd').addEventListener('keydown', e => { if(e.key === 'Enter') descifrarIBAN(); });
+  </script>
 
 </body>
 </html>
