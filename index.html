@@ -61,7 +61,7 @@
     @media(min-width:880px){.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
     @media(max-width:799px){.menu{display:none}.burger{display:block}}
 
-    section{padding:3.2rem 0}
+    section{padding:1.8rem 0}
     h2{font-family:"Playfair Display", serif; font-size:2rem; color:var(--brand-2); margin:0 0 1.2rem}
     p{line-height:1.6}
 
@@ -83,7 +83,7 @@
     summary{cursor:pointer; font-weight:600; color:var(--brand-2)}
     summary::marker{color:var(--brand)}
 
-    footer{padding:3rem 0 4rem; text-align:center; color:var(--muted)}
+    footer{padding:2rem 0 2.5rem; text-align:center; color:var(--muted)}
 
     /* ===== Menú móvil tipo sheet ===== */
     .menu-sheet{position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.28); backdrop-filter: blur(2px); display: grid; place-items: start center}
@@ -164,8 +164,57 @@
   height: auto;
   border-radius: 12px;
   object-fit: cover;
+  box-shadow: var(--shadow);
 }
 
+/* Bloque de contraseña / IBAN */
+.iban-panel{
+  margin-top: 1.2rem;
+  background: linear-gradient(135deg, rgba(181,131,141,.08), rgba(229,152,155,.08));
+  border: 1px solid rgba(181,131,141,.25);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+}
+.iban-panel__label{
+  display:flex; align-items:center; gap:.4rem;
+  font-weight:600; color:var(--brand-2); font-size:.95rem; margin:0 0 .7rem;
+}
+.iban-form{display:flex; gap:.6rem; flex-wrap:wrap; align-items:center}
+.iban-input{
+  padding:.6rem .9rem; border:1.5px solid var(--brand); border-radius:999px;
+  font-size:.95rem; outline:none; width:200px; background:#fff;
+  transition: box-shadow .15s ease;
+}
+.iban-input:focus{box-shadow: var(--ring)}
+.iban-btn{
+  padding:.6rem 1.3rem; background:var(--brand); color:#fff; border:0; border-radius:999px;
+  font-size:.95rem; font-weight:600; cursor:pointer; transition: background .15s ease, transform .1s ease;
+}
+.iban-btn:hover{background:var(--brand-2)}
+.iban-btn:active{transform: scale(.97)}
+.iban-error{color:#c0392b; font-size:.85rem; margin:.6rem 0 0; display:none}
+.iban-result{
+  display:none; margin-top:1rem; background:#fff; border:1.5px solid var(--brand);
+  border-radius:14px; padding:.9rem 1.1rem;
+}
+.iban-result__label{margin:0; font-size:.78rem; letter-spacing:.4px; text-transform:uppercase; color:var(--muted)}
+.iban-result__value{margin:.3rem 0 0; font-size:1.15rem; font-weight:700; letter-spacing:.6px; font-family:monospace; color:var(--ink)}
+.iban-copy-btn{
+  margin-top:.7rem; padding:.4rem 1rem; background:transparent; border:1.5px solid var(--brand);
+  color:var(--brand); border-radius:999px; font-size:.82rem; font-weight:600; cursor:pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.iban-copy-btn:hover{background:var(--brand); color:#fff}
+
+#banquete{scroll-margin-top: 90px}
+
+/* Vista previa del palacio en la tarjeta de Banquete */
+.venue-preview{margin:.9rem 0}
+.venue-preview__grid{display:grid; grid-template-columns:1fr 1fr; gap:.5rem}
+.venue-preview__grid img{width:100%; height:180px; object-fit:cover; object-position:center; border-radius:10px; box-shadow:var(--shadow); display:block}
+.venue-preview__grid--iglesia{grid-template-columns:1fr}
+.venue-preview__grid--iglesia img{height:260px; object-position:center 80%}
+.venue-preview__caption{font-size:.85rem; color:var(--muted); font-style:italic; margin:.5rem 0 0}
 
   </style>
 </head>
@@ -182,9 +231,8 @@
 	  </a>
       <nav class="menu" aria-label="Secciones">
         <a href="#historia">Historia</a>
-        <a href="#boda">La boda</a>
         <a href="#itinerario">Itinerario</a>
-        <a href="#rsvp">Confirmar</a>
+        <a href="#boda">La boda</a>
         <a href="#regalos">Regalos</a>
         <a href="#faq">FAQ</a>
         <a href="#galeria">Galería</a>
@@ -196,10 +244,9 @@
       <div class="menu-sheet__panel" role="dialog" aria-modal="true" aria-label="Menú">
         <nav class="menu-sheet__nav">
           <a href="#historia">Historia</a>
-          <a href="#boda">La boda</a>
           <a href="#itinerario">Itinerario</a>
-          <a href="#rsvp">Confirmar</a>
-          <a href="#regalos">Regalos</a>
+          <a href="#boda">La boda</a>
+              <a href="#regalos">Regalos</a>
           <a href="#faq">FAQ</a>
           <a href="#galeria">Galería</a>
         </nav>
@@ -226,6 +273,9 @@
 		  <!-- FOTO DE NUESTRA HISTORIA -->
 			<figure class="story-slider" id="historia-slider" aria-label="Galería de nuestra historia">
 			  <div class="story-slide active">
+				<img src="img/preboda-1.jpg" alt="Belén y Dani en la preboda" loading="lazy" width="2066" height="3099">
+			  </div>
+			  <div class="story-slide">
 				<img src="img/foto_peques_1.jpg" alt="Belén y Dani en el viaje 1" loading="lazy" width="1600" height="1067">
 			  </div>
 			  <div class="story-slide">
@@ -241,7 +291,7 @@
 			  </div>
 			</figure>
 			<div class="story-dots" id="historia-dots" role="tablist" aria-label="Indicadores del carrusel"></div>
-			<div class="story-figcaption">Tres momentos que nos encantan.</div>
+			<div class="story-figcaption">Cuatro momentos que nos encantan.</div>
 
 			  <!-- /FOTO -->
           <p>De sobra sabéis nuestra historia.</p>
@@ -256,35 +306,12 @@ Por eso hoy estamos aquí, celebrando que, después de diez años de persecucion
   <p><strong>Fecha:</strong> 05/09/2026</p>
   <p><strong>Lugar:</strong> Palacio de Esquileo, cerca de Riaza</p>
   <p><strong>Hora:</strong> Llegada a partir de las 12:00, ceremonia a las 12:30</p>
-  <p><strong>Alojamiento:</strong> Os recomendamos alojaros en Riaza; desde allí se llega fácilmente al lugar de la celebración.</p>
+  <p><strong>Transporte:</strong> Habrá autobuses desde y hasta Riaza (ida ~13:45, vuelta aprox. 00:00). Confírmalo en el formulario de la sección <a href="#banquete">Banquete</a>.</p>
+  <p><strong>Alojamiento:</strong> Os recomendamos alojaros en Riaza, desde donde se llega fácilmente al lugar de la celebración. Hay hoteles, hostales y casas rurales de distintos precios; reservad con antelación si venís el fin de semana completo.</p>
   <p><strong>Dress code:</strong> Cóctel Elegante</p>
   <p><strong>Niños:</strong> Los peques son bienvenidos; si venís con ellos, avisadnos para organizarnos mejor.</p>
   <p><strong>Hashtag:</strong> #BodaDeBelenYDani</p>
 </aside>
-      </div>
-    </section>
-
-    <!-- La boda -->
-    <section id="boda">
-      <div class="container grid cols-2">
-        <div class="card"> 
-          <h2>Ceremonia</h2>
-          <p><span class="time">12:30</span> · Iglesia de Nuestra Señora del Manto</p>
-          <p>Dirección: Plaza Mayor, Riaza.</p>
-		   <p><a href="https://maps.app.goo.gl/Qg59EomaGHEhg2Lp8" target="_blank" rel="noopener">Abrir en el mapa</a></p>
-          <div class="card" style="padding:0; overflow:hidden">
-            <iframe title="Mapa del lugar" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d712.4913489230595!2d-3.47745522628779!3d41.280144801210966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd440bb830fc1dfd%3A0x31bb4d506d73253c!2sIglesia%20de%20Nuestra%20Se%C3%B1ora%20del%20Manto!5e1!3m2!1ses!2ses!4v1760263176927!5m2!1ses!2ses" width="100%" height="220" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-        </div>
-        <div class="card">
-          <h2>Banquete</h2>
-          <p><span class="time">14:00</span> · Palacio de Esquileo</p>
-          <p>Habrá opciones para alergias, sin gluten, veganos, cordero y pescado. Indícalo en el formulario que habilitaremos más adelante.</p>
-		   <p><a href="https://maps.app.goo.gl/VwhNcFtBWBN3WR7S8" target="_blank" rel="noopener">Abrir en el mapa</a></p>
-          <div class="card" style="padding:0; overflow:hidden">
-            <iframe title="Mapa del lugar" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1795.6564937245803!2d-3.5687873514083357!3d41.26957192051022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd440889a8141255%3A0x9c358e5bb4105bac!2sPalacio%20de%20Esquileo!5e1!3m2!1ses!2ses!4v1760284828879!5m2!1ses!2ses" width="100%" height="220" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -295,7 +322,7 @@ Por eso hoy estamos aquí, celebrando que, después de diez años de persecucion
         <div class="card">
           <div class="timeline">
             <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">12:30</div><div>Ceremonia en la iglesia de Riaza</div></div>
-            <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">13:30</div><div>Transporte hasta Soto de Sepúlveda</div></div>
+            <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">13:45</div><div>Transporte hasta el Palacio de Esquileo (Soto de Sepúlveda)</div></div>
             <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">14:00</div><div>Cóctel y fotos</div></div>
             <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">16:00</div><div>Banquete</div></div>
             <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div class="time">18:30</div><div>Baile y barra libre</div></div>
@@ -304,40 +331,59 @@ Por eso hoy estamos aquí, celebrando que, después de diez años de persecucion
       </div>
     </section>
 
-    <!-- Confirmación de asistencia -->
-    <section id="rsvp">
-      <div class="container grid cols-3">
-        <div class="card" style="grid-column:span 2">
-          <h2>Confirmar asistencia</h2>
-          <p>Por favor, confirma antes del <strong>20/05/2026</strong>.</p>
-		<p>De momento solo confirmanos tu asistencia, para detalles de comida y transporte te pediremos confirmación más adelante.</p>
-          <!-- Formulario incrustado de Google Forms -->
-<div class="card" style="padding:0; overflow:hidden">
-  <iframe
-    title="Formulario de confirmación"
-    src="https://docs.google.com/forms/d/e/1FAIpQLSdcoClHu-bN09XFHAElu0bWGjzaWSSKTQNcVr5G_9FUYS5tjA/viewform?embedded=true"
-    width="100%"
-    height="1400"
-    frameborder="0"
-    marginheight="0"
-    marginwidth="0"
-    style="border:0; display:block"
-    loading="lazy"
-  >Cargando…</iframe>
-</div>
-<p class="muted" style="color:var(--muted); margin-top:.6rem">
-  Si no ves el formulario, ábrelo aquí:
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdcoClHu-bN09XFHAElu0bWGjzaWSSKTQNcVr5G_9FUYS5tjA/viewform" target="_blank" rel="noopener">Abrir formulario en una pestaña nueva</a>.
-</p>
-</div>
-        <aside class="card">
-          <h2>Transporte</h2>
-          <p>Habrá autobuses desde y hasta Riaza. Ida a las 13:30 (aprox) y vuelta se confirmará más adelante aunque la hora aproximada de finalización es a las 00:00.</p>
-          <h2>Alojamiento</h2>
-		<p>Recomendamos alojaros en Riaza. Desde allí se llega fácilmente al lugar de la celebración y podréis disfrutar del fin de semana completo.</p>
-		<p>En el pueblo hay hoteles, hostales y casas rurales de distintos estilos y precios, así que podéis escoger lo que mejor se adapte a vosotros. Os recomendamos reservar con antelación, sobre todo si venís todo el fin de semana, aunque muchos de los alojamientos no abren reservas para septiembre hasta mayo/junio.</p>
+    <!-- La boda -->
+    <section id="boda">
+      <div class="container grid cols-2">
+        <div class="card"> 
+          <h2>Ceremonia</h2>
+          <p><span class="time">12:30</span> · Iglesia de Nuestra Señora del Manto</p>
+          <p>Dirección: Plaza Mayor, Riaza.</p>
+          <div class="venue-preview">
+            <div class="venue-preview__grid venue-preview__grid--iglesia">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Iglesia_de_Nuestra_Se%C3%B1ora_del_Manto_-_01.jpg" alt="Iglesia de Nuestra Señora del Manto, vista exterior" loading="lazy">
+            </div>
+          </div>
+		   <p><a href="https://maps.app.goo.gl/Qg59EomaGHEhg2Lp8" target="_blank" rel="noopener">Abrir en el mapa</a></p>
+          <div class="card" style="padding:0; overflow:hidden">
+            <iframe title="Mapa del lugar" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d712.4913489230595!2d-3.47745522628779!3d41.280144801210966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd440bb830fc1dfd%3A0x31bb4d506d73253c!2sIglesia%20de%20Nuestra%20Se%C3%B1ora%20del%20Manto!5e1!3m2!1ses!2ses!4v1760263176927!5m2!1ses!2ses" width="100%" height="220" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+        <div class="card" id="banquete">
+          <h2>Banquete</h2>
+          <p><span class="time">14:00</span> · Palacio de Esquileo</p>
+          <p>Habrá opciones para alergias, sin gluten, veganos, cordero y pescado.</p>
+          <div class="venue-preview">
+            <div class="venue-preview__grid">
+              <img src="https://ficheros.venuesplace.com/h4Qs89FG/x4lxdR5C_t4.webp" alt="Palacio de Esquileo, vista general" loading="lazy">
+              <img src="img/palacio-4_1.jpg" alt="Palacio de Esquileo, jardines" loading="lazy">
+            </div>
+            <p class="venue-preview__caption">Así es el sitio: jardines y suelo natural… elegid calzado en consecuencia, aunque no es especialmente inestable 👠🌿</p>
+          </div>
+		   <p><a href="https://maps.app.goo.gl/VwhNcFtBWBN3WR7S8" target="_blank" rel="noopener">Abrir en el mapa</a></p>
+          <div class="card" style="padding:0; overflow:hidden">
+            <iframe title="Mapa del lugar" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1795.6564937245803!2d-3.5687873514083357!3d41.26957192051022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd440889a8141255%3A0x9c358e5bb4105bac!2sPalacio%20de%20Esquileo!5e1!3m2!1ses!2ses!4v1760284828879!5m2!1ses!2ses" width="100%" height="220" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
 
-        </aside>
+          <h2 style="margin-top:1.5rem">Confirma tu menú y el bus</h2>
+          <p>Si ya confirmaste tu asistencia, ¡genial! Ahora solo nos falta que nos digas qué prefieres para el banquete (<strong>cordero</strong> o <strong>dorada</strong>), si necesitas el <strong>autobús</strong> y si tienes alguna alergia o dieta especial. Rellena este formulario (uno por persona) antes del <strong>20/05/2026</strong>.</p>
+          <div class="card" style="padding:0; overflow:hidden">
+            <iframe
+              title="Formulario de menú y bus"
+              src="https://docs.google.com/forms/d/e/1FAIpQLSdoNlrtxezc1k-MJMh47NRE-xrWy-y7iDAOhT1Yh7dgE2VwCA/viewform?embedded=true"
+              width="100%"
+              height="900"
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+              style="border:0; display:block"
+              loading="lazy"
+            >Cargando…</iframe>
+          </div>
+          <p class="muted" style="color:var(--muted); margin-top:.6rem">
+            Si no ves el formulario, ábrelo aquí:
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdoNlrtxezc1k-MJMh47NRE-xrWy-y7iDAOhT1Yh7dgE2VwCA/viewform" target="_blank" rel="noopener">Abrir formulario en una pestaña nueva</a>.
+          </p>
+        </div>
       </div>
     </section>
 
@@ -350,23 +396,17 @@ Por eso hoy estamos aquí, celebrando que, después de diez años de persecucion
           <h2>Lista de regalos</h2>
           <p>Lo importante es que vengas.</p>
           <p>Pero si quieres ayudarnos con nuestra ruta por Nueva Zelanda y que podamos conocer a la familia Bolsón, introduce la contraseña que te hemos enviado para ver nuestros datos bancarios. Si no la tienes, pídenosla por WhatsApp y te la mandamos enseguida.</p>
-          <div id="iban-box" style="margin-top:1rem">
-            <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
-              <input id="iban-pwd" type="password" placeholder="Contraseña" autocomplete="off"
-                style="padding:.5rem .8rem;border:1.5px solid var(--brand);border-radius:999px;font-size:.95rem;outline:none;width:180px">
-              <button onclick="descifrarIBAN()"
-                style="padding:.5rem 1.2rem;background:var(--brand);color:#fff;border:0;border-radius:999px;font-size:.95rem;cursor:pointer">
-                Ver IBAN
-              </button>
+          <div class="iban-panel" id="iban-box">
+            <p class="iban-panel__label">🔒 Datos bancarios protegidos</p>
+            <div class="iban-form">
+              <input id="iban-pwd" class="iban-input" type="password" placeholder="Contraseña" autocomplete="off">
+              <button class="iban-btn" onclick="descifrarIBAN()">Ver IBAN</button>
             </div>
-            <p id="iban-error" style="color:#c0392b;font-size:.85rem;margin:.4rem 0 0;display:none">Contraseña incorrecta.</p>
-            <div id="iban-result" style="display:none;margin-top:.8rem;background:var(--bg);border:1.5px solid var(--brand);border-radius:12px;padding:.7rem 1rem">
-              <p style="margin:0;font-size:.8rem;color:var(--muted)">IBAN</p>
-              <p id="iban-value" style="margin:.2rem 0 0;font-size:1.05rem;font-weight:600;letter-spacing:.5px;font-family:monospace"></p>
-              <button onclick="copiarIBAN()" id="iban-copy-btn"
-                style="margin-top:.5rem;padding:.35rem .9rem;background:transparent;border:1.5px solid var(--brand);color:var(--brand);border-radius:999px;font-size:.8rem;cursor:pointer">
-                Copiar
-              </button>
+            <p id="iban-error" class="iban-error">Contraseña incorrecta.</p>
+            <div id="iban-result" class="iban-result">
+              <p class="iban-result__label">IBAN</p>
+              <p id="iban-value" class="iban-result__value"></p>
+              <button onclick="copiarIBAN()" id="iban-copy-btn" class="iban-copy-btn">Copiar</button>
             </div>
           </div>
         </div>
